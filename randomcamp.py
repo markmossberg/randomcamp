@@ -112,7 +112,7 @@ A small tool to help you discover new artists on Bandcamp.
     try:
         num_bands = int(num_bands)
     except ValueError:
-        raw_input("Argument needs to be int value.")
+        raw_input("Argument needs to be int value. Exiting on <Enter>...")
         sys.exit()
 
     # main stuff
@@ -124,7 +124,7 @@ A small tool to help you discover new artists on Bandcamp.
         else:
             other_os()
 
-    if sys.platform.startswith('win'):
+    if sys.platform.startswith('win') and not nonverbose:
         raw_input("\nDone!")
     else:
         print "Done!"
