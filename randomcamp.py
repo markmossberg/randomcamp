@@ -49,7 +49,20 @@ def bcamp_query(list):
 
     return query_results
 
-def osx(results):
+def get_bandcamp_results():
+    word_list = rand_words()
+    bcamp_results = bcamp_query(word_list)
+
+    # if words are weird enough, bandcamp returns nothing
+    if len(bcamp_results) == 0:
+        while len(bcamp_results) == 0:
+            word_list = rand_words()
+            bcamp_results = bcamp_query(word_list)
+    return bcamp_results
+
+def osx():
+    results = get_bandcamp_results()
+
     # gets band's url
     selection = random.randint(0,len(results)-1)
     chosen_band = results[selection]
@@ -58,9 +71,24 @@ def osx(results):
 
     # opens it in default browser
     osx_cmd = 'open "%s"' % (band_url)
+    print osx_cmd
     subprocess.call(osx_cmd, shell=True)
 
+def win():
+    results = get_bandcamp_results()
+
+    # gets band's url
+    selection = random.randint(0,len(results)-1)
+    chosen_band = results[selection]
+    band_subdomain = chosen_band['subdomain']
+    band_url = "http://%s.bandcamp.com" % (band_subdomain)
+
+    # opens it in default browser
+    win_cmd = 'start %s"' % (band_url)
+    subprocess.call(win_cmd, shell=True)
+
 def other_os(results):
+    results = get_bandcamp_results()
     selection = random.randint(0,len(results)-1)
     chosen_band = results[selection]
     chosen_band_url = chosen_band['url']
@@ -73,6 +101,11 @@ def main():
 
     # check args
     if len(sys.argv) == 1:
+        print """
+        "Randomcamp", by Mark Mossberg
+        
+        """
+        raw_input('I recommend that you have your default web browser open before you continue,\notherwise some of the bands might not show up.\nPress <Enter> to continue.')
         num_bands = raw_input("Enter number of bands to find: ")
     else:
         num_bands = sys.argv[1]
@@ -80,32 +113,19 @@ def main():
     try:
         num_bands = int(num_bands)
     except ValueError:
-        print "Argument needs to be int value."
+        raw_input("Argument needs to be int value.")
         sys.exit()
 
-    word_list = rand_words()
-    bcamp_results = bcamp_query(word_list)
-
-    # if words are weird enough, bandcamp returns nothing
-    if len(bcamp_results) == 0:
-        while len(bcamp_results) == 0:
-            word_list = rand_words()
-            bcamp_results = bcamp_query(word_list)
-
-
+    # main stuff
     for i in range(num_bands):
         if sys.platform == 'darwin':
-            word_list = rand_words()
-            bcamp_results = bcamp_query(word_list)
-
-            # if words are weird enough, bandcamp returns nothing
-            if len(bcamp_results) == 0:
-                while len(bcamp_results) == 0:
-                    word_list = rand_words()
-                    bcamp_results = bcamp_query(word_list)
-            osx(bcamp_results)
+            osx()
+        elif sys.platform.startswith('win'):
+            win()
         else:
-            other_os(bcamp_results)
+            other_os()
 
+    if sys.platform.starswith('win'):
+        raw_input("Finished.")
 if __name__ == '__main__':
     main()
