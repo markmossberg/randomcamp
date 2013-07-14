@@ -124,9 +124,10 @@ A small tool to help you discover new artists on Bandcamp.
         else:
             other_os()
 
-    if sys.platform.startswith('win') and not nonverbose:
+    if sys.platform.startswith('win'):
         raw_input("\nDone!")
     else:
         print "Done!"
+
 if __name__ == '__main__':
     main()
