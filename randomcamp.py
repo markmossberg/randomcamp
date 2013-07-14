@@ -1,5 +1,8 @@
 #!/usr/bin/python
 
+# Mark Mossberg
+# Finds almost-random bands on Bandcamp to help people find new music and support artists.
+
 import random, subprocess, urllib, json, sys
 
 ### functions ##########
