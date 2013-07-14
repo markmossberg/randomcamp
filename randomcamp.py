@@ -40,28 +40,60 @@ def rand_words():
     return rand_words
 
 def bcamp_query(list):
-    bcamp_url = "http://api.bandcamp.com/api/band/3/search?key=vatnajokull&name="
+
+    def run_bcamp_search(url):
+        bcamp_results = {}
+
+        try: # sometimes there's a weird error with the wordnik api
+            bcamp_req = urllib.urlopen(url)
+            bcamp_resp = bcamp_req.read()
+            bcamp_response = json.loads(bcamp_resp)
+            bcamp_results = bcamp_response['results']
+        except:
+            pass # i know, i know :/
+        finally:
+            return bcamp_results
 
     # craft query
+    bcamp_url = "http://api.bandcamp.com/api/band/3/search?key=vatnajokull&name="
     for word in list:
         bcamp_url += word + ","
     bcamp_url = bcamp_url[:-1]
 
     # run bandcamp search
-    bcamp_req = urllib.urlopen(bcamp_url)
-    bcamp_resp = bcamp_req.read()
-    bcamp_response = json.loads(bcamp_resp)
-    bcamp_results = bcamp_response['results']
-    return bcamp_results
+    query_results = run_bcamp_search(bcamp_url)
+
+    # makes sure there's at least something to work with!
+    if len(query_results) == 0:
+        print 'got here'
+        query_results = run_bcamp_search(bcamp_url)
+
+    return query_results
+
+def osx(results):
+    # gets band's url
+    selection = random.randint(0,len(results)-1)
+    chosen_band = results[selection]
+    chosen_band_url = chosen_band['url']
+
+    # opens it in default browser
+    osx_cmd = 'open "%s"' % (chosen_band_url)
+    subprocess.call(osx_cmd, shell=True)
+
 
 def main():
 
     word_list = rand_words()
-    results = bcamp_query(word_list)
+    bcamp_results = bcamp_query(word_list)
 
     print word_list
     print
-    print results
+    print bcamp_results
+    print
+
+    osx(bcamp_results)
+
+    
 
     #cmd = 'open "' + bcamp_url + '"'
     #print cmd
