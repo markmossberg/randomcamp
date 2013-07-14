@@ -26,7 +26,7 @@ def rand_words():
 def bcamp_query(list):
 
     def run_bcamp_search(url):
-        bcamp_results = {}
+        bcamp_results = []
 
         try: # sometimes there's a weird error with the wordnik api
             bcamp_req = urllib.urlopen(url)
