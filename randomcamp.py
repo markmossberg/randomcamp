@@ -71,7 +71,6 @@ def osx():
 
     # opens it in default browser
     osx_cmd = 'open "%s"' % (band_url)
-    print osx_cmd
     subprocess.call(osx_cmd, shell=True)
 
 def win():
@@ -102,11 +101,11 @@ def main():
     # check args
     if len(sys.argv) == 1:
         print """
-        "Randomcamp", by Mark Mossberg
-        
+Randomcamp, by Mark Mossberg
+A small tool to help you discover new artists on Bandcamp.
         """
-        raw_input('I recommend that you have your default web browser open before you continue,\notherwise some of the bands might not show up.\nPress <Enter> to continue.')
-        num_bands = raw_input("Enter number of bands to find: ")
+        raw_input('I recommend that you have your default web browser open at this point. \nPress <Enter> to continue.\n')
+        num_bands = raw_input("Number of bands you want to discover: ")
     else:
         num_bands = sys.argv[1]
 
@@ -125,7 +124,9 @@ def main():
         else:
             other_os()
 
-    if sys.platform.starswith('win'):
-        raw_input("Finished.")
+    if sys.platform.startswith('win'):
+        raw_input("\nDone!")
+    else:
+        print "Done!"
 if __name__ == '__main__':
     main()
