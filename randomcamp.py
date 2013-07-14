@@ -63,11 +63,6 @@ def bcamp_query(list):
     # run bandcamp search
     query_results = run_bcamp_search(bcamp_url)
 
-    # makes sure there's at least something to work with!
-    if len(query_results) == 0:
-        print 'got here'
-        query_results = run_bcamp_search(bcamp_url)
-
     return query_results
 
 def osx(results):
@@ -80,25 +75,27 @@ def osx(results):
     osx_cmd = 'open "%s"' % (chosen_band_url)
     subprocess.call(osx_cmd, shell=True)
 
+def other_os(results):
+    selection = random.randint(0,len(results)-1)
+    chosen_band = results[selection]
+    chosen_band_url = chosen_band['url']
+    print "Bands:"
+    print "%s: %s" % (chosen_band, chosen_band_url)
 
 def main():
 
     word_list = rand_words()
     bcamp_results = bcamp_query(word_list)
 
-    print word_list
-    print
-    print bcamp_results
-    print
+    # if words are weird enough, bandcamp returns nothing
+    if len(bcamp_results) == 0:
+        while len(bcamp_results) == 0:
+            bcamp_results = bcamp_query(word_list)
 
-    osx(bcamp_results)
-
-    
-
-    #cmd = 'open "' + bcamp_url + '"'
-    #print cmd
-    #proc = subprocess.call(cmd, shell=True)
-
+    if sys.platform == 'darwin':
+        osx(bcamp_results)
+    else:
+        other_os(bcamp_results)
 
 if __name__ == '__main__':
     main()
