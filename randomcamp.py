@@ -10,7 +10,7 @@ import random, subprocess, urllib, json, sys
 def rand_words():
     # string constants
     api_key = "32549059d8e5389e4432f22bd79186407ce3eca763cd3564b"
-    wordnik_url = "http://api.wordnik.com/v4/words.json/randomWords?maxLength=8"
+    wordnik_url = "http://api.wordnik.com/v4/words.json/randomWords?limit=12&maxLength=8"
     wordnik_url = wordnik_url + "&api_key=" + api_key
 
     # get random words list
