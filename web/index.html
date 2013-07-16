@@ -3,17 +3,19 @@
 
   <head>
     <meta http-equiv="content-type" content="text/html; charset=utf-8" />
-  
+    <script src="script.js"></script>
     <title>Randomcamp</title>
-    
+
   </head>
 
   <body>
     <div class="container">
         <h1>Randomcamp</h1>
         <p>Let's find some new music.</p>
+        <p>Enter the number of bands you want to discover.</p>
         <form name="form">
-          <input type="text" placeholder="number of bands"></input>
+          <input type="text" name="num_band" id="input" placeholder="number of bands"></input>
+		  <input type="button" name="submit" value="Go!" onClick="process();" />
         </form>
     </div>
   </body>
